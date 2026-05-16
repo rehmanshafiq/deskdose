@@ -1,3 +1,4 @@
+import 'package:deskdose/core/identity/anonymous_user_id_provider.dart';
 import 'package:deskdose/core/network/network_info.dart';
 import 'package:deskdose/core/network/supabase_client_wrapper.dart';
 import 'package:deskdose/features/routines/data/datasources/routine_remote_datasource.dart';
@@ -13,7 +14,10 @@ abstract final class RoutinesModule {
   static void register(GetIt sl) {
     // Data sources
     sl.registerLazySingleton<RoutineRemoteDataSource>(
-      () => RoutineRemoteDataSourceImpl(sl<SupabaseClientWrapper>()),
+      () => RoutineRemoteDataSourceImpl(
+        supabase: sl<SupabaseClientWrapper>(),
+        anonymousUserId: sl<AnonymousUserIdProvider>(),
+      ),
     );
 
     // Repositories

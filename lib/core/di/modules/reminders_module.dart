@@ -1,3 +1,4 @@
+import 'package:deskdose/core/identity/anonymous_user_id_provider.dart';
 import 'package:deskdose/core/network/network_info.dart';
 import 'package:deskdose/core/network/supabase_client_wrapper.dart';
 import 'package:deskdose/features/reminders/data/datasources/reminder_remote_datasource.dart';
@@ -10,7 +11,10 @@ import 'package:get_it/get_it.dart';
 abstract final class RemindersModule {
   static void register(GetIt sl) {
     sl.registerLazySingleton<ReminderRemoteDataSource>(
-      () => ReminderRemoteDataSourceImpl(sl<SupabaseClientWrapper>()),
+      () => ReminderRemoteDataSourceImpl(
+        supabase: sl<SupabaseClientWrapper>(),
+        anonymousUserId: sl<AnonymousUserIdProvider>(),
+      ),
     );
 
     sl.registerLazySingleton<ReminderRepository>(

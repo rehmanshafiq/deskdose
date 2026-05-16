@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 class WorkoutSessionEntity extends Equatable {
   const WorkoutSessionEntity({
     required this.id,
-    required this.userId,
+    required this.anonymousUserId,
     required this.routineId,
     required this.completedAt,
     required this.durationSeconds,
@@ -12,7 +12,7 @@ class WorkoutSessionEntity extends Equatable {
   });
 
   final String id;
-  final String userId;
+  final String anonymousUserId;
   final String routineId;
   final DateTime completedAt;
   final int durationSeconds;
@@ -21,7 +21,7 @@ class WorkoutSessionEntity extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        userId,
+        anonymousUserId,
         routineId,
         completedAt,
         durationSeconds,

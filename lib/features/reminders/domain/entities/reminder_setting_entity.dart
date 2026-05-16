@@ -5,7 +5,7 @@ enum ReminderType { workout, hydration, posture, breakReminder }
 class ReminderSettingEntity extends Equatable {
   const ReminderSettingEntity({
     required this.id,
-    required this.userId,
+    required this.anonymousUserId,
     required this.type,
     required this.isEnabled,
     required this.intervalMinutes,
@@ -14,7 +14,7 @@ class ReminderSettingEntity extends Equatable {
   });
 
   final String id;
-  final String userId;
+  final String anonymousUserId;
   final ReminderType type;
   final bool isEnabled;
   final int intervalMinutes;
@@ -22,6 +22,13 @@ class ReminderSettingEntity extends Equatable {
   final String? endTime;
 
   @override
-  List<Object?> get props =>
-      [id, userId, type, isEnabled, intervalMinutes, startTime, endTime];
+  List<Object?> get props => [
+        id,
+        anonymousUserId,
+        type,
+        isEnabled,
+        intervalMinutes,
+        startTime,
+        endTime,
+      ];
 }

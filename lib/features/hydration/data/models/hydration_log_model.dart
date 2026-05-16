@@ -4,25 +4,25 @@ import 'package:deskdose/features/hydration/domain/entities/hydration_log_entity
 class HydrationLogModel {
   const HydrationLogModel({
     required this.id,
-    required this.userId,
+    required this.anonymousUserId,
     required this.amountMl,
     required this.loggedAt,
   });
 
   final String id;
-  final String userId;
+  final String anonymousUserId;
   final int amountMl;
   final DateTime loggedAt;
 
   factory HydrationLogModel.fromJson(DataMap json) => HydrationLogModel(
         id: json['id'] as String,
-        userId: json['user_id'] as String,
+        anonymousUserId: json['anonymous_user_id'] as String,
         amountMl: json['amount_ml'] as int,
         loggedAt: DateTime.parse(json['logged_at'] as String),
       );
 
   DataMap toJson() => {
-        'user_id': userId,
+        'anonymous_user_id': anonymousUserId,
         'amount_ml': amountMl,
         'logged_at': loggedAt.toUtc().toIso8601String(),
       };
@@ -31,7 +31,7 @@ class HydrationLogModel {
 extension HydrationLogModelMapper on HydrationLogModel {
   HydrationLogEntity toEntity() => HydrationLogEntity(
         id: id,
-        userId: userId,
+        anonymousUserId: anonymousUserId,
         amountMl: amountMl,
         loggedAt: loggedAt,
       );

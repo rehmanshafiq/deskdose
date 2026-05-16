@@ -1,5 +1,5 @@
 import 'package:deskdose/core/constants/supabase_tables.dart';
-import 'package:deskdose/core/error/exceptions.dart';
+import 'package:deskdose/core/identity/anonymous_user_id_provider.dart';
 import 'package:deskdose/core/network/supabase_client_wrapper.dart';
 import 'package:deskdose/features/home/data/models/daily_stats_model.dart';
 
@@ -8,17 +8,19 @@ abstract class HomeRemoteDataSource {
 }
 
 class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
-  HomeRemoteDataSourceImpl(this._supabase);
+  HomeRemoteDataSourceImpl({
+    required SupabaseClientWrapper supabase,
+    required AnonymousUserIdProvider anonymousUserId,
+  })  : _supabase = supabase,
+        _anonymousUserId = anonymousUserId;
 
   final SupabaseClientWrapper _supabase;
+  final AnonymousUserIdProvider _anonymousUserId;
 
   @override
   Future<DailyStatsModel> getDailyStats({DateTime? date}) {
     return _supabase.execute((client) async {
-      final userId = _supabase.currentUserId;
-      if (userId == null) {
-        throw const AuthException(message: 'Not authenticated');
-      }
+      final anonymousUserId = await _anonymousUserId.getOrCreate();
 
       final targetDate = date ?? DateTime.now();
       final startOfDay = DateTime(
@@ -31,14 +33,14 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       final workouts = await client
           .from(SupabaseTables.workoutSessions)
           .select('duration_seconds')
-          .eq('user_id', userId)
+          .eq(SupabaseColumns.anonymousUserId, anonymousUserId)
           .gte('completed_at', startOfDay.toUtc().toIso8601String())
           .lt('completed_at', endOfDay.toUtc().toIso8601String());
 
       final hydration = await client
           .from(SupabaseTables.hydrationLogs)
           .select('amount_ml')
-          .eq('user_id', userId)
+          .eq(SupabaseColumns.anonymousUserId, anonymousUserId)
           .gte('logged_at', startOfDay.toUtc().toIso8601String())
           .lt('logged_at', endOfDay.toUtc().toIso8601String());
 

@@ -4,7 +4,7 @@ import 'package:deskdose/features/reminders/domain/entities/reminder_setting_ent
 class ReminderSettingModel {
   const ReminderSettingModel({
     required this.id,
-    required this.userId,
+    required this.anonymousUserId,
     required this.type,
     required this.isEnabled,
     required this.intervalMinutes,
@@ -13,7 +13,7 @@ class ReminderSettingModel {
   });
 
   final String id;
-  final String userId;
+  final String anonymousUserId;
   final String type;
   final bool isEnabled;
   final int intervalMinutes;
@@ -22,7 +22,7 @@ class ReminderSettingModel {
 
   factory ReminderSettingModel.fromJson(DataMap json) => ReminderSettingModel(
         id: json['id'] as String,
-        userId: json['user_id'] as String,
+        anonymousUserId: json['anonymous_user_id'] as String,
         type: json['type'] as String,
         isEnabled: json['is_enabled'] as bool? ?? true,
         intervalMinutes: json['interval_minutes'] as int? ?? 60,
@@ -34,7 +34,7 @@ class ReminderSettingModel {
 extension ReminderSettingModelMapper on ReminderSettingModel {
   ReminderSettingEntity toEntity() => ReminderSettingEntity(
         id: id,
-        userId: userId,
+        anonymousUserId: anonymousUserId,
         type: ReminderType.values.firstWhere(
           (e) => e.name == type,
           orElse: () => ReminderType.workout,

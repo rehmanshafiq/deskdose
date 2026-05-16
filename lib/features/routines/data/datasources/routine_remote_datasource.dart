@@ -1,5 +1,6 @@
 import 'package:deskdose/core/constants/supabase_tables.dart';
 import 'package:deskdose/core/error/exceptions.dart';
+import 'package:deskdose/core/identity/anonymous_user_id_provider.dart';
 import 'package:deskdose/core/network/supabase_client_wrapper.dart';
 import 'package:deskdose/features/routines/data/models/routine_model.dart';
 import 'package:deskdose/features/routines/data/models/workout_session_model.dart';
@@ -22,9 +23,14 @@ abstract class RoutineRemoteDataSource {
 }
 
 class RoutineRemoteDataSourceImpl implements RoutineRemoteDataSource {
-  RoutineRemoteDataSourceImpl(this._supabase);
+  RoutineRemoteDataSourceImpl({
+    required SupabaseClientWrapper supabase,
+    required AnonymousUserIdProvider anonymousUserId,
+  })  : _supabase = supabase,
+        _anonymousUserId = anonymousUserId;
 
   final SupabaseClientWrapper _supabase;
+  final AnonymousUserIdProvider _anonymousUserId;
 
   @override
   Future<List<RoutineModel>> getRoutines({
@@ -78,13 +84,10 @@ class RoutineRemoteDataSourceImpl implements RoutineRemoteDataSource {
     double? caloriesBurned,
   }) {
     return _supabase.execute((client) async {
-      final userId = _supabase.currentUserId;
-      if (userId == null) {
-        throw const AuthException(message: 'User not authenticated');
-      }
+      final anonymousUserId = await _anonymousUserId.getOrCreate();
 
       final payload = {
-        'user_id': userId,
+        SupabaseColumns.anonymousUserId: anonymousUserId,
         'routine_id': routineId,
         'completed_at': DateTime.now().toUtc().toIso8601String(),
         'duration_seconds': durationSeconds,

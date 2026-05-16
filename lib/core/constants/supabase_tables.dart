@@ -1,6 +1,5 @@
 /// Supabase table and column name constants.
 abstract final class SupabaseTables {
-  static const String users = 'users';
   static const String routines = 'routines';
   static const String workoutSessions = 'workout_sessions';
   static const String hydrationLogs = 'hydration_logs';
@@ -11,5 +10,5 @@ abstract final class SupabaseColumns {
   static const String id = 'id';
   static const String createdAt = 'created_at';
   static const String updatedAt = 'updated_at';
-  static const String userId = 'user_id';
+  static const String anonymousUserId = 'anonymous_user_id';
 }

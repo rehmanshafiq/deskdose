@@ -4,7 +4,7 @@ import 'package:deskdose/features/routines/domain/entities/workout_session_entit
 class WorkoutSessionModel {
   const WorkoutSessionModel({
     required this.id,
-    required this.userId,
+    required this.anonymousUserId,
     required this.routineId,
     required this.completedAt,
     required this.durationSeconds,
@@ -12,7 +12,7 @@ class WorkoutSessionModel {
   });
 
   final String id;
-  final String userId;
+  final String anonymousUserId;
   final String routineId;
   final DateTime completedAt;
   final int durationSeconds;
@@ -21,7 +21,7 @@ class WorkoutSessionModel {
   factory WorkoutSessionModel.fromJson(DataMap json) {
     return WorkoutSessionModel(
       id: json['id'] as String,
-      userId: json['user_id'] as String,
+      anonymousUserId: json['anonymous_user_id'] as String,
       routineId: json['routine_id'] as String,
       completedAt: DateTime.parse(json['completed_at'] as String),
       durationSeconds: json['duration_seconds'] as int,
@@ -30,7 +30,7 @@ class WorkoutSessionModel {
   }
 
   DataMap toJson() => {
-        'user_id': userId,
+        'anonymous_user_id': anonymousUserId,
         'routine_id': routineId,
         'completed_at': completedAt.toIso8601String(),
         'duration_seconds': durationSeconds,
@@ -41,7 +41,7 @@ class WorkoutSessionModel {
 extension WorkoutSessionModelMapper on WorkoutSessionModel {
   WorkoutSessionEntity toEntity() => WorkoutSessionEntity(
         id: id,
-        userId: userId,
+        anonymousUserId: anonymousUserId,
         routineId: routineId,
         completedAt: completedAt,
         durationSeconds: durationSeconds,

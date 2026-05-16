@@ -1,13 +1,4 @@
--- DeskDose Supabase schema (reference)
-
-create table if not exists public.users (
-  id uuid primary key references auth.users (id) on delete cascade,
-  email text not null,
-  display_name text,
-  avatar_url text,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now()
-);
+-- DeskDose Supabase schema (no-login / anonymous identity)
 
 create table if not exists public.routines (
   id uuid primary key default gen_random_uuid(),
@@ -25,7 +16,7 @@ create table if not exists public.routines (
 
 create table if not exists public.workout_sessions (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references public.users (id) on delete cascade,
+  anonymous_user_id text not null,
   routine_id uuid not null references public.routines (id) on delete cascade,
   completed_at timestamptz not null default now(),
   duration_seconds int not null,
@@ -33,22 +24,28 @@ create table if not exists public.workout_sessions (
   created_at timestamptz not null default now()
 );
 
+create index if not exists idx_workout_sessions_anonymous_user_id
+  on public.workout_sessions (anonymous_user_id);
+
 create table if not exists public.hydration_logs (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references public.users (id) on delete cascade,
+  anonymous_user_id text not null,
   amount_ml int not null,
   logged_at timestamptz not null default now()
 );
 
+create index if not exists idx_hydration_logs_anonymous_user_id
+  on public.hydration_logs (anonymous_user_id);
+
 create table if not exists public.reminder_settings (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references public.users (id) on delete cascade,
+  anonymous_user_id text not null,
   type text not null,
   is_enabled boolean not null default true,
   interval_minutes int not null default 60,
   start_time text,
   end_time text,
-  unique (user_id, type)
+  unique (anonymous_user_id, type)
 );
 
--- Enable RLS and add policies per your auth requirements.
+-- Use RLS policies that allow anon key access scoped by anonymous_user_id if needed.

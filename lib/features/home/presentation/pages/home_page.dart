@@ -1,7 +1,5 @@
 import 'package:deskdose/core/di/injection_container.dart';
 import 'package:deskdose/core/router/app_routes.dart';
-import 'package:deskdose/features/auth/presentation/bloc/auth_bloc.dart';
-import 'package:deskdose/features/auth/presentation/bloc/auth_event.dart';
 import 'package:deskdose/features/home/presentation/bloc/home_bloc.dart';
 import 'package:deskdose/features/home/presentation/bloc/home_event.dart';
 import 'package:deskdose/features/home/presentation/bloc/home_state.dart';
@@ -36,16 +34,7 @@ class _HomeView extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('DeskDose'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () =>
-                context.read<AuthBloc>().add(const SignOutRequested()),
-          ),
-        ],
-      ),
+      appBar: AppBar(title: const Text('DeskDose')),
       body: RefreshIndicator(
         onRefresh: () async {
           context.read<HomeBloc>().add(const LoadDailyStatsEvent());
