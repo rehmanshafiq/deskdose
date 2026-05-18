@@ -166,10 +166,8 @@ class SupabaseDataSource {
   }
 
   ({DateTime start, DateTime end}) _dayRange(DateTime date) {
-    final local = DateTime(date.year, date.month, date.day);
-    return (
-      start: local,
-      end: local.add(const Duration(days: 1)),
-    );
+    final start = DateTime(date.year, date.month, date.day);
+    final end = start.add(const Duration(days: 1));
+    return (start: start, end: end);
   }
 }

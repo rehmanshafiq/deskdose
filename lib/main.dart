@@ -4,7 +4,6 @@ import 'package:deskdose/core/constants/app_constants.dart';
 import 'package:deskdose/core/di/injection.dart';
 import 'package:deskdose/core/router/app_router.dart';
 import 'package:deskdose/core/theme/app_theme.dart';
-import 'package:deskdose/core/utils/anonymous_user_helper.dart';
 import 'package:deskdose/features/home/bloc/home_bloc.dart';
 import 'package:deskdose/features/hydration/bloc/hydration_bloc.dart';
 import 'package:deskdose/features/reminders/bloc/reminders_bloc.dart';
@@ -15,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import 'core/utils/anonymous_user_helper.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

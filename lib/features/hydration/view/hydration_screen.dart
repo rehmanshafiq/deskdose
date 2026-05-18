@@ -32,13 +32,26 @@ class _HydrationBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<HydrationBloc, HydrationState>(
       listenWhen: (previous, current) {
+        if (current is HydrationLoaded && current.actionError != null) {
+          return true;
+        }
         if (current is! HydrationLoaded || previous is! HydrationLoaded) {
           return false;
         }
         return current.todayLogs.length > previous.todayLogs.length &&
-            !current.isLogging;
+            !current.isLogging &&
+            current.actionError == null;
       },
       listener: (context, state) {
+        if (state is HydrationLoaded && state.actionError != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.actionError!),
+              backgroundColor: Colors.red.shade800,
+            ),
+          );
+          return;
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Water logged! 💧')),
         );

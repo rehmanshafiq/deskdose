@@ -39,25 +39,55 @@ class HydrationBloc extends Bloc<HydrationEvent, HydrationState> {
     Emitter<HydrationState> emit,
   ) async {
     final previous = state;
-    if (previous is HydrationLoaded) {
-      emit(previous.copyWith(isLogging: true));
-    }
+    if (previous is! HydrationLoaded) return;
+
+    final userId = await getOrCreateAnonymousUserId();
+    final loggedAt = DateTime.now();
+    final optimisticTotal = previous.totalMl + event.amountMl;
+    final optimisticLog = HydrationLog(
+      id: 'pending-${loggedAt.millisecondsSinceEpoch}',
+      anonymousUserId: userId,
+      amountMl: event.amountMl,
+      loggedAt: loggedAt,
+    );
+
+    emit(
+      previous.copyWith(
+        todayLogs: [optimisticLog, ...previous.todayLogs],
+        totalMl: optimisticTotal,
+        percentage: _percentage(optimisticTotal, previous.goalMl),
+        isLogging: true,
+        clearActionError: true,
+      ),
+    );
 
     try {
-      final userId = await getOrCreateAnonymousUserId();
       await _hydrationRepository.insertHydrationLog(
         HydrationLog(
           id: '',
           anonymousUserId: userId,
           amountMl: event.amountMl,
-          loggedAt: DateTime.now(),
+          loggedAt: loggedAt,
         ),
       );
 
       await _emitLoadedForDate(emit);
     } catch (e) {
-      emit(HydrationError(message: e.toString()));
+      emit(
+        previous.copyWith(
+          isLogging: false,
+          actionError: _friendlyError(e),
+        ),
+      );
     }
+  }
+
+  String _friendlyError(Object error) {
+    final message = error.toString();
+    if (message.contains('row-level security')) {
+      return 'Could not save — run supabase/rls_policies.sql in your Supabase project.';
+    }
+    return message;
   }
 
   Future<void> _emitLoadedForDate(Emitter<HydrationState> emit) async {

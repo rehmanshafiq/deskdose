@@ -22,6 +22,7 @@ final class HydrationLoaded extends HydrationState {
     required this.goalMl,
     required this.percentage,
     this.isLogging = false,
+    this.actionError,
   });
 
   final List<HydrationLog> todayLogs;
@@ -29,6 +30,7 @@ final class HydrationLoaded extends HydrationState {
   final int goalMl;
   final double percentage;
   final bool isLogging;
+  final String? actionError;
 
   HydrationLoaded copyWith({
     List<HydrationLog>? todayLogs,
@@ -36,6 +38,8 @@ final class HydrationLoaded extends HydrationState {
     int? goalMl,
     double? percentage,
     bool? isLogging,
+    String? actionError,
+    bool clearActionError = false,
   }) {
     return HydrationLoaded(
       todayLogs: todayLogs ?? this.todayLogs,
@@ -43,12 +47,14 @@ final class HydrationLoaded extends HydrationState {
       goalMl: goalMl ?? this.goalMl,
       percentage: percentage ?? this.percentage,
       isLogging: isLogging ?? this.isLogging,
+      actionError:
+          clearActionError ? null : (actionError ?? this.actionError),
     );
   }
 
   @override
   List<Object?> get props =>
-      [todayLogs, totalMl, goalMl, percentage, isLogging];
+      [todayLogs, totalMl, goalMl, percentage, isLogging, actionError];
 }
 
 final class HydrationError extends HydrationState {

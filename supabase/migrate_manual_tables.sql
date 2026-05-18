@@ -1,5 +1,6 @@
 -- Run this in Supabase: SQL Editor → New query → Run
 -- Aligns manually created tables with the DeskDose app schema (see schema.sql).
+-- Then run rls_policies.sql so hydration inserts are allowed (anon key).
 
 -- ---------------------------------------------------------------------------
 -- routines

@@ -48,4 +48,25 @@ create table if not exists public.reminder_settings (
   unique (anonymous_user_id, type)
 );
 
--- Use RLS policies that allow anon key access scoped by anonymous_user_id if needed.
+-- Row-level security (required for anon key access from the app).
+-- Run supabase/rls_policies.sql in the SQL Editor after creating tables.
+
+alter table public.routines enable row level security;
+alter table public.workout_sessions enable row level security;
+alter table public.hydration_logs enable row level security;
+alter table public.reminder_settings enable row level security;
+
+create policy "routines_select_anon"
+  on public.routines for select to anon, authenticated using (true);
+
+create policy "workout_sessions_all_anon"
+  on public.workout_sessions for all to anon, authenticated
+  using (true) with check (true);
+
+create policy "hydration_logs_all_anon"
+  on public.hydration_logs for all to anon, authenticated
+  using (true) with check (true);
+
+create policy "reminder_settings_all_anon"
+  on public.reminder_settings for all to anon, authenticated
+  using (true) with check (true);
