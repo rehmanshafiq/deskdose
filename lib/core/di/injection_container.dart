@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:deskdose/core/config/env_config.dart';
 import 'package:deskdose/core/di/modules/core_module.dart';
+import 'package:deskdose/core/di/modules/data_module.dart';
 import 'package:deskdose/core/di/modules/home_module.dart';
 import 'package:deskdose/core/di/modules/hydration_module.dart';
 import 'package:deskdose/core/di/modules/posture_module.dart';
@@ -30,6 +31,7 @@ Future<void> initDependencies() async {
   sl.registerLazySingleton<Connectivity>(() => Connectivity());
 
   CoreModule.register(sl);
+  DataModule.register(sl);
   await sl<AnonymousUserIdProvider>().getOrCreate();
   RoutinesModule.register(sl);
   HomeModule.register(sl);

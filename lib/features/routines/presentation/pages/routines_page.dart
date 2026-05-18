@@ -1,4 +1,5 @@
 import 'package:deskdose/core/router/app_routes.dart';
+import 'package:deskdose/features/routines/domain/entities/routine_entity.dart';
 import 'package:deskdose/features/routines/presentation/bloc/routine_bloc.dart';
 import 'package:deskdose/features/routines/presentation/bloc/routine_event.dart';
 import 'package:deskdose/features/routines/presentation/bloc/routine_state.dart';
@@ -9,7 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class RoutinesPage extends StatefulWidget {
-  const RoutinesPage({super.key});
+  const RoutinesPage({super.key, this.initialCategory});
+
+  final String? initialCategory;
 
   @override
   State<RoutinesPage> createState() => _RoutinesPageState();
@@ -19,7 +22,17 @@ class _RoutinesPageState extends State<RoutinesPage> {
   @override
   void initState() {
     super.initState();
-    context.read<RoutineBloc>().add(const LoadRoutinesEvent());
+    context.read<RoutineBloc>().add(
+          LoadRoutinesEvent(category: _parseCategory(widget.initialCategory)),
+        );
+  }
+
+  RoutineCategory? _parseCategory(String? value) {
+    if (value == null || value.isEmpty) return null;
+    for (final category in RoutineCategory.values) {
+      if (category.name == value) return category;
+    }
+    return null;
   }
 
   @override

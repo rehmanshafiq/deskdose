@@ -5,8 +5,7 @@ import 'package:deskdose/core/di/injection_container.dart';
 import 'package:deskdose/core/router/app_router.dart';
 import 'package:deskdose/core/theme/app_theme.dart';
 import 'package:deskdose/core/utils/anonymous_user_helper.dart';
-import 'package:deskdose/features/home/presentation/bloc/home_bloc.dart';
-import 'package:deskdose/features/home/presentation/bloc/home_event.dart';
+import 'package:deskdose/features/home/bloc/home_bloc.dart';
 import 'package:deskdose/features/hydration/presentation/bloc/hydration_bloc.dart';
 import 'package:deskdose/features/posture/presentation/bloc/posture_bloc.dart';
 import 'package:deskdose/features/reminders/presentation/bloc/reminder_bloc.dart';
@@ -61,7 +60,7 @@ class DeskDoseApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => sl<HomeBloc>()..add(const LoadDailyStatsEvent()),
+          create: (_) => sl<HomeBloc>()..add(const HomeLoadRequested()),
         ),
         BlocProvider(create: (_) => sl<RoutineBloc>()),
         BlocProvider(create: (_) => sl<ReminderBloc>()),

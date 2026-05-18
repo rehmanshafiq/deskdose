@@ -8,6 +8,10 @@ abstract final class AppRoutes {
   static const String hydration = '/hydration';
   static const String posture = '/posture';
   static const String subscription = '/subscription';
+  static const String settings = '/settings';
 
   static String routineDetailPath(String id) => '/routines/$id';
+
+  static String routinesWithCategory(String category) =>
+      '$routines?category=$category';
 }
