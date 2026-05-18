@@ -138,32 +138,34 @@ class _HomeLoadedView extends StatelessWidget {
               (s) => s is! HomeLoading,
             );
       },
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
-        children: [
-          _HomeHeader(streak: state.currentStreak),
-          const SizedBox(height: 20),
-          _StatsRow(
-            todaySessionCount: state.todaySessionCount,
-            weeklyMinutes: state.weeklyMinutes,
-            todayWaterMl: state.todayWaterMl,
-          ),
-          const SizedBox(height: 28),
-          Text(
-            'Quick Start',
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
-          ),
-          const SizedBox(height: 12),
-          const _QuickStartGrid(),
-          const SizedBox(height: 24),
-          HydrationMiniBar(
-            waterMl: state.todayWaterMl,
-            goalMl: AppConstants.defaultHydrationGoalMl,
-            onTap: () => context.push(AppRoutes.hydration),
-          ),
-        ],
+      child: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+          children: [
+            _HomeHeader(streak: state.currentStreak),
+            const SizedBox(height: 20),
+            _StatsRow(
+              todaySessionCount: state.todaySessionCount,
+              weeklyMinutes: state.weeklyMinutes,
+              todayWaterMl: state.todayWaterMl,
+            ),
+            const SizedBox(height: 28),
+            Text(
+              'Quick Start',
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+            ),
+            const SizedBox(height: 12),
+            const _QuickStartGrid(),
+            const SizedBox(height: 24),
+            HydrationMiniBar(
+              waterMl: state.todayWaterMl,
+              goalMl: AppConstants.defaultHydrationGoalMl,
+              onTap: () => context.push(AppRoutes.hydration),
+            ),
+          ],
+        ),
       ),
     );
   }
