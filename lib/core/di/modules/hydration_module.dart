@@ -5,7 +5,6 @@ import 'package:deskdose/features/hydration/data/datasources/hydration_remote_da
 import 'package:deskdose/features/hydration/data/repositories/hydration_repository_impl.dart';
 import 'package:deskdose/features/hydration/domain/repositories/hydration_repository.dart';
 import 'package:deskdose/features/hydration/domain/usecases/log_water_intake_usecase.dart';
-import 'package:deskdose/features/hydration/presentation/bloc/hydration_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 abstract final class HydrationModule {
@@ -25,7 +24,5 @@ abstract final class HydrationModule {
     );
 
     sl.registerLazySingleton(() => LogWaterIntakeUseCase(sl()));
-
-    sl.registerFactory(() => HydrationBloc(logWaterIntake: sl()));
   }
 }

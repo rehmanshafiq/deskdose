@@ -60,6 +60,14 @@ class Routine extends Equatable {
         'created_at': createdAt.toUtc().toIso8601String(),
       };
 
+  String get formattedDuration {
+    final minutes = durationSeconds ~/ 60;
+    final seconds = durationSeconds % 60;
+    if (minutes > 0 && seconds > 0) return '${minutes}m ${seconds}s';
+    if (minutes > 0) return '$minutes min';
+    return '${seconds}s';
+  }
+
   Routine copyWith({
     String? id,
     String? title,

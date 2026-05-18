@@ -168,7 +168,7 @@ class _HomeLoadedView extends StatelessWidget {
           HydrationMiniBar(
             waterMl: state.todayWaterMl,
             goalMl: AppConstants.defaultHydrationGoalMl,
-            onTap: () => context.push(AppRoutes.hydration),
+            onTap: () => context.go(AppRoutes.hydration),
           ),
         ],
       ),
@@ -279,8 +279,8 @@ class _QuickStartGrid extends StatelessWidget {
                   subtitle: 'Loosen up at your desk',
                   durationLabel: '5 min',
                   accentColor: AppColors.primary,
-                  onTap: () => context.push(
-                    AppRoutes.routinesExploreWithCategory('stretch'),
+                  onTap: () => context.go(
+                    AppRoutes.routinesWithCategory('stretch'),
                   ),
                 ),
               ),
@@ -292,8 +292,8 @@ class _QuickStartGrid extends StatelessWidget {
                   subtitle: 'Rest tired screen eyes',
                   durationLabel: '3 min',
                   accentColor: AppColors.hydrationAccent,
-                  onTap: () => context.push(
-                    AppRoutes.routinesExploreWithCategory('eyes'),
+                  onTap: () => context.go(
+                    AppRoutes.routinesWithCategory('eyes'),
                   ),
                 ),
               ),
@@ -312,8 +312,8 @@ class _QuickStartGrid extends StatelessWidget {
                   subtitle: 'Ease lower back tension',
                   durationLabel: '7 min',
                   accentColor: AppColors.premiumAccent,
-                  onTap: () => context.push(
-                    AppRoutes.routinesExploreWithCategory('mobility'),
+                  onTap: () => context.go(
+                    AppRoutes.routinesWithCategory('mobility'),
                   ),
                 ),
               ),
@@ -325,8 +325,8 @@ class _QuickStartGrid extends StatelessWidget {
                   subtitle: 'Align spine & shoulders',
                   durationLabel: '4 min',
                   accentColor: _posturePurple,
-                  onTap: () => context.push(
-                    AppRoutes.routinesExploreWithCategory('posture'),
+                  onTap: () => context.go(
+                    AppRoutes.routinesWithCategory('posture'),
                   ),
                 ),
               ),

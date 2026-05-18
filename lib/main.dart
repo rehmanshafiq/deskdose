@@ -1,16 +1,14 @@
-import 'package:deskdose/core/base/app_bloc_observer.dart';
+import 'package:deskdose/core/bloc_observer.dart';
 import 'package:deskdose/core/config/env_config.dart';
 import 'package:deskdose/core/constants/app_constants.dart';
-import 'package:deskdose/core/di/injection_container.dart';
+import 'package:deskdose/core/di/injection.dart';
 import 'package:deskdose/core/router/app_router.dart';
 import 'package:deskdose/core/theme/app_theme.dart';
-import 'package:deskdose/core/utils/anonymous_user_helper.dart';
 import 'package:deskdose/features/home/bloc/home_bloc.dart';
-import 'package:deskdose/features/hydration/presentation/bloc/hydration_bloc.dart';
-import 'package:deskdose/features/posture/presentation/bloc/posture_bloc.dart';
-import 'package:deskdose/features/reminders/presentation/bloc/reminder_bloc.dart';
+import 'package:deskdose/features/hydration/bloc/hydration_bloc.dart';
+import 'package:deskdose/features/reminders/bloc/reminders_bloc.dart';
+import 'package:deskdose/features/reminders/services/reminder_notification_service.dart';
 import 'package:deskdose/features/routines/bloc/routines_bloc.dart';
-import 'package:deskdose/features/subscription/presentation/bloc/subscription_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -22,8 +20,8 @@ Future<void> main() async {
   await _loadEnvironment();
   await _initializeSupabase();
   Bloc.observer = AppBlocObserver();
-  await initDependencies();
-  await getOrCreateAnonymousUserId();
+  await setupLocator();
+  await ReminderNotificationService.instance.initialize();
 
   runApp(const DeskDoseApp());
 }
@@ -32,7 +30,8 @@ Future<void> _loadEnvironment() async {
   try {
     await dotenv.load(fileName: AppConstants.envFileName);
   } catch (_) {
-    if (!EnvConfig.isConfigured && const bool.fromEnvironment('dart.vm.product')) {
+    if (!EnvConfig.isConfigured &&
+        const bool.fromEnvironment('dart.vm.product')) {
       debugPrint(
         'Warning: ${AppConstants.envFileName} not found. '
         'Set SUPABASE_URL and SUPABASE_ANON_KEY.',
@@ -53,8 +52,6 @@ Future<void> _initializeSupabase() async {
 class DeskDoseApp extends StatelessWidget {
   const DeskDoseApp({super.key});
 
-  static final _router = AppRouter().router;
-
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -66,19 +63,17 @@ class DeskDoseApp extends StatelessWidget {
           create: (_) => sl<RoutinesBloc>()..add(const RoutinesLoadRequested()),
         ),
         BlocProvider(
-          create: (_) => sl<SubscriptionBloc>()
-            ..add(const LoadSubscriptionEvent()),
+          create: (_) => sl<HydrationBloc>()
+            ..add(HydrationLoadRequested(DateTime.now())),
         ),
-        BlocProvider(create: (_) => sl<ReminderBloc>()),
-        BlocProvider(create: (_) => sl<HydrationBloc>()),
-        BlocProvider(create: (_) => sl<PostureBloc>()),
+        BlocProvider(
+          create: (_) => sl<RemindersBloc>()..add(const RemindersLoadRequested()),
+        ),
       ],
       child: MaterialApp.router(
         title: AppConstants.appName,
         theme: AppTheme.dark,
-        darkTheme: AppTheme.dark,
-        themeMode: ThemeMode.dark,
-        routerConfig: _router,
+        routerConfig: appRouter,
         debugShowCheckedModeBanner: false,
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:deskdose/core/router/app_routes.dart';
+import 'package:deskdose/features/paywall/view/paywall_bottom_sheet.dart';
 import 'package:deskdose/features/home/presentation/bloc/home_bloc.dart';
 import 'package:deskdose/features/home/presentation/bloc/home_event.dart';
 import 'package:deskdose/features/home/presentation/bloc/home_state.dart';
@@ -110,27 +111,28 @@ class _HomeView extends StatelessWidget {
                 FeatureTile(
                   icon: Icons.fitness_center,
                   label: 'Routines',
-                  onTap: () => context.push(AppRoutes.routines),
+                  onTap: () => context.go(AppRoutes.routines),
                 ),
                 FeatureTile(
                   icon: Icons.water_drop,
                   label: 'Hydration',
-                  onTap: () => context.push(AppRoutes.hydration),
+                  onTap: () => context.go(AppRoutes.hydration),
                 ),
                 FeatureTile(
                   icon: Icons.accessibility_new,
                   label: 'Posture',
-                  onTap: () => context.push(AppRoutes.posture),
+                  onTap: () =>
+                      context.go(AppRoutes.routinesWithCategory('posture')),
                 ),
                 FeatureTile(
                   icon: Icons.notifications_active,
                   label: 'Reminders',
-                  onTap: () => context.push(AppRoutes.reminders),
+                  onTap: () => context.go(AppRoutes.settings),
                 ),
                 FeatureTile(
                   icon: Icons.workspace_premium,
                   label: 'Premium',
-                  onTap: () => context.push(AppRoutes.subscription),
+                  onTap: () => PaywallBottomSheet.show(context),
                 ),
               ],
             ),

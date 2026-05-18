@@ -54,6 +54,26 @@ class ReminderSettings extends Equatable {
         'end_time': endTime,
       };
 
+  ReminderSettings copyWith({
+    String? id,
+    String? anonymousUserId,
+    ReminderType? type,
+    bool? isEnabled,
+    int? intervalMinutes,
+    String? startTime,
+    String? endTime,
+  }) {
+    return ReminderSettings(
+      id: id ?? this.id,
+      anonymousUserId: anonymousUserId ?? this.anonymousUserId,
+      type: type ?? this.type,
+      isEnabled: isEnabled ?? this.isEnabled,
+      intervalMinutes: intervalMinutes ?? this.intervalMinutes,
+      startTime: startTime ?? this.startTime,
+      endTime: endTime ?? this.endTime,
+    );
+  }
+
   @override
   List<Object?> get props => [
         id,

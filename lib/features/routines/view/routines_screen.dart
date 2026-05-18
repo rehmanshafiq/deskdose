@@ -242,7 +242,7 @@ class _RoutinesLoadedView extends StatelessWidget {
     }
 
     context.push(
-      AppRoutes.routineWorkoutPath(routine.id),
+      AppRoutes.routineDetailPath(routine.id),
       extra: routine,
     );
   }
