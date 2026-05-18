@@ -1,4 +1,3 @@
-import 'package:deskdose/core/di/injection_container.dart';
 import 'package:deskdose/features/hydration/presentation/bloc/hydration_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,9 +9,7 @@ class HydrationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<HydrationBloc>(),
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(title: const Text('Hydration')),
         body: BlocConsumer<HydrationBloc, HydrationState>(
           listener: (context, state) {
@@ -64,7 +61,6 @@ class HydrationPage extends StatelessWidget {
             );
           },
         ),
-      ),
     );
   }
 }

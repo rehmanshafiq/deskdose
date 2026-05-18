@@ -1,4 +1,3 @@
-import 'package:deskdose/core/di/injection_container.dart';
 import 'package:deskdose/core/router/app_routes.dart';
 import 'package:deskdose/features/routines/presentation/bloc/routine_bloc.dart';
 import 'package:deskdose/features/routines/presentation/bloc/routine_event.dart';
@@ -9,15 +8,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-class RoutinesPage extends StatelessWidget {
+class RoutinesPage extends StatefulWidget {
   const RoutinesPage({super.key});
 
   @override
+  State<RoutinesPage> createState() => _RoutinesPageState();
+}
+
+class _RoutinesPageState extends State<RoutinesPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<RoutineBloc>().add(const LoadRoutinesEvent());
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<RoutineBloc>()..add(const LoadRoutinesEvent()),
-      child: const _RoutinesView(),
-    );
+    return const _RoutinesView();
   }
 }
 

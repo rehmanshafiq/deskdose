@@ -1,6 +1,4 @@
-import 'package:deskdose/core/constants/storage_keys.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:uuid/uuid.dart';
+import 'package:deskdose/core/utils/anonymous_user_helper.dart';
 
 /// Provides a stable anonymous identity for no-login Supabase writes.
 abstract class AnonymousUserIdProvider {
@@ -10,27 +8,19 @@ abstract class AnonymousUserIdProvider {
 }
 
 class AnonymousUserIdProviderImpl implements AnonymousUserIdProvider {
-  AnonymousUserIdProviderImpl(this._storage);
-
-  final GetStorage _storage;
-  static const _uuid = Uuid();
-
   String? _cachedId;
 
   @override
-  String? get id => _cachedId ?? _storage.read<String>(StorageKeys.anonymousUserId);
+  String? get id => _cachedId;
 
   @override
   Future<String> getOrCreate() async {
-    final existing = id;
-    if (existing != null && existing.isNotEmpty) {
-      _cachedId = existing;
-      return existing;
+    if (_cachedId != null && _cachedId!.isNotEmpty) {
+      return _cachedId!;
     }
 
-    final generated = _uuid.v4();
-    await _storage.write(StorageKeys.anonymousUserId, generated);
-    _cachedId = generated;
-    return generated;
+    final id = await getOrCreateAnonymousUserId();
+    _cachedId = id;
+    return id;
   }
 }

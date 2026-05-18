@@ -14,25 +14,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final GetIt sl = GetIt.instance;
 
-/// Initializes all dependencies. Call before [runApp].
+/// Initializes all dependencies. Call after Supabase and dotenv are ready.
 Future<void> initDependencies() async {
-  await _initSupabase();
-  CoreModule.register(sl);
-  await sl<AnonymousUserIdProvider>().getOrCreate();
-  RoutinesModule.register(sl);
-  HomeModule.register(sl);
-  RemindersModule.register(sl);
-  HydrationModule.register(sl);
-  PostureModule.register(sl);
-  SubscriptionModule.register(sl);
-}
-
-Future<void> _initSupabase() async {
   if (EnvConfig.isConfigured) {
-    await Supabase.initialize(
-      url: EnvConfig.supabaseUrl,
-      anonKey: EnvConfig.supabaseAnonKey,
-    );
     sl.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
     sl.registerLazySingleton<SupabaseClientWrapper>(
       () => SupabaseClientWrapperImpl(sl()),
@@ -44,6 +28,15 @@ Future<void> _initSupabase() async {
   }
 
   sl.registerLazySingleton<Connectivity>(() => Connectivity());
+
+  CoreModule.register(sl);
+  await sl<AnonymousUserIdProvider>().getOrCreate();
+  RoutinesModule.register(sl);
+  HomeModule.register(sl);
+  RemindersModule.register(sl);
+  HydrationModule.register(sl);
+  PostureModule.register(sl);
+  SubscriptionModule.register(sl);
 }
 
 class _UnconfiguredSupabaseWrapper implements SupabaseClientWrapper {

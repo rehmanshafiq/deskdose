@@ -1,22 +1,30 @@
-import 'package:deskdose/core/di/injection_container.dart';
 import 'package:deskdose/features/routines/presentation/bloc/routine_bloc.dart';
 import 'package:deskdose/features/routines/presentation/bloc/routine_event.dart';
 import 'package:deskdose/features/routines/presentation/bloc/routine_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class RoutineDetailPage extends StatelessWidget {
+class RoutineDetailPage extends StatefulWidget {
   const RoutineDetailPage({super.key, required this.routineId});
 
   final String routineId;
 
   @override
+  State<RoutineDetailPage> createState() => _RoutineDetailPageState();
+}
+
+class _RoutineDetailPageState extends State<RoutineDetailPage> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<RoutineBloc>().add(
+          LoadRoutineDetailEvent(routineId: widget.routineId),
+        );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<RoutineBloc>()
-        ..add(LoadRoutineDetailEvent(routineId: routineId)),
-      child: _RoutineDetailView(routineId: routineId),
-    );
+    return _RoutineDetailView(routineId: widget.routineId);
   }
 }
 

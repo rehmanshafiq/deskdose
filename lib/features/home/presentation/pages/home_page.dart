@@ -1,4 +1,3 @@
-import 'package:deskdose/core/di/injection_container.dart';
 import 'package:deskdose/core/router/app_routes.dart';
 import 'package:deskdose/features/home/presentation/bloc/home_bloc.dart';
 import 'package:deskdose/features/home/presentation/bloc/home_event.dart';
@@ -15,14 +14,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (_) => sl<HomeBloc>()..add(const LoadDailyStatsEvent()),
-        ),
-      ],
-      child: const _HomeView(),
-    );
+    return const _HomeView();
   }
 }
 
