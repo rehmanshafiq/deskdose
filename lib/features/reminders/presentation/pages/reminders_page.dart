@@ -1,6 +1,9 @@
+import 'package:deskdose/core/presentation/widgets/screen_safe_area.dart';
+import 'package:deskdose/core/theme/app_theme.dart';
 import 'package:deskdose/features/reminders/presentation/bloc/reminder_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class RemindersPage extends StatefulWidget {
   const RemindersPage({super.key});
@@ -18,9 +21,20 @@ class _RemindersPageState extends State<RemindersPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Reminders')),
-      body: BlocBuilder<ReminderBloc, ReminderState>(
+    return ColoredBox(
+      color: AppColors.background,
+      child: ScreenSafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: const Text('Reminders'),
+            backgroundColor: AppColors.background,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => context.pop(),
+            ),
+          ),
+          body: BlocBuilder<ReminderBloc, ReminderState>(
         builder: (context, state) {
           return switch (state) {
             ReminderLoading() || ReminderInitial() =>
@@ -47,6 +61,8 @@ class _RemindersPageState extends State<RemindersPage> {
                   ),
           };
         },
+          ),
+        ),
       ),
     );
   }

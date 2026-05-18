@@ -3,6 +3,8 @@ abstract final class AppRoutes {
   static const String splash = '/';
   static const String home = '/home';
   static const String routines = '/routines';
+  /// Full-screen routines (pushed from Home) — shows a back button.
+  static const String routinesExplore = '/routines/explore';
   static const String routineDetail = '/routines/:id';
   static const String reminders = '/reminders';
   static const String hydration = '/hydration';
@@ -12,6 +14,11 @@ abstract final class AppRoutes {
 
   static String routineDetailPath(String id) => '/routines/$id';
 
+  static String routineWorkoutPath(String id) => '/routines/$id/workout';
+
   static String routinesWithCategory(String category) =>
       '$routines?category=$category';
+
+  static String routinesExploreWithCategory(String category) =>
+      '$routinesExplore?category=$category';
 }

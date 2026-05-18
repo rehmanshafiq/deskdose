@@ -1,8 +1,11 @@
+import 'package:deskdose/core/presentation/widgets/screen_safe_area.dart';
+import 'package:deskdose/core/theme/app_theme.dart';
 import 'package:deskdose/features/routines/presentation/bloc/routine_bloc.dart';
 import 'package:deskdose/features/routines/presentation/bloc/routine_event.dart';
 import 'package:deskdose/features/routines/presentation/bloc/routine_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class RoutineDetailPage extends StatefulWidget {
   const RoutineDetailPage({super.key, required this.routineId});
@@ -37,9 +40,20 @@ class _RoutineDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Routine')),
-      body: BlocBuilder<RoutineBloc, RoutineState>(
+    return ColoredBox(
+      color: AppColors.background,
+      child: ScreenSafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: const Text('Routine'),
+            backgroundColor: AppColors.background,
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () => context.pop(),
+            ),
+          ),
+          body: BlocBuilder<RoutineBloc, RoutineState>(
         builder: (context, state) {
           return switch (state) {
             RoutineInitial() || RoutineLoading() => const Center(
@@ -102,6 +116,8 @@ class _RoutineDetailView extends StatelessWidget {
             _ => const Center(child: Text('Routine not found')),
           };
         },
+          ),
+        ),
       ),
     );
   }

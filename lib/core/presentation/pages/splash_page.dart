@@ -1,4 +1,5 @@
 import 'package:deskdose/core/constants/app_constants.dart';
+import 'package:deskdose/core/presentation/widgets/screen_safe_area.dart';
 import 'package:deskdose/core/router/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -24,25 +25,27 @@ class _SplashPageState extends State<SplashPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.self_improvement,
-              size: 80,
-              color: theme.colorScheme.primary,
-            ),
-            const SizedBox(height: 24),
-            Text(
-              AppConstants.appName,
-              style: theme.textTheme.headlineMedium?.copyWith(
-                fontWeight: FontWeight.bold,
+      body: ScreenSafeArea(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.self_improvement,
+                size: 80,
+                color: theme.colorScheme.primary,
               ),
-            ),
-            const SizedBox(height: 32),
-            const CircularProgressIndicator(),
-          ],
+              const SizedBox(height: 24),
+              Text(
+                AppConstants.appName,
+                style: theme.textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 32),
+              const CircularProgressIndicator(),
+            ],
+          ),
         ),
       ),
     );

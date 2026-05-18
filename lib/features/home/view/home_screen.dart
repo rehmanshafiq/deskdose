@@ -1,4 +1,5 @@
 import 'package:deskdose/core/constants/app_constants.dart';
+import 'package:deskdose/core/presentation/widgets/screen_safe_area.dart';
 import 'package:deskdose/core/router/app_routes.dart';
 import 'package:deskdose/core/theme/app_theme.dart';
 import 'package:deskdose/features/home/bloc/home_bloc.dart';
@@ -28,7 +29,10 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: navigationShell,
+      body: ScreenSafeArea(
+        bottom: false,
+        child: navigationShell,
+      ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: navigationShell.currentIndex,
         onDestinationSelected: _onTabSelected,
@@ -69,7 +73,10 @@ class HomeTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     return const ColoredBox(
       color: AppColors.background,
-      child: _HomeTabBody(),
+      child: ScreenSafeArea(
+        bottom: false,
+        child: _HomeTabBody(),
+      ),
     );
   }
 }
@@ -138,34 +145,32 @@ class _HomeLoadedView extends StatelessWidget {
               (s) => s is! HomeLoading,
             );
       },
-      child: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
-          children: [
-            _HomeHeader(streak: state.currentStreak),
-            const SizedBox(height: 20),
-            _StatsRow(
-              todaySessionCount: state.todaySessionCount,
-              weeklyMinutes: state.weeklyMinutes,
-              todayWaterMl: state.todayWaterMl,
-            ),
-            const SizedBox(height: 28),
-            Text(
-              'Quick Start',
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-            ),
-            const SizedBox(height: 12),
-            const _QuickStartGrid(),
-            const SizedBox(height: 24),
-            HydrationMiniBar(
-              waterMl: state.todayWaterMl,
-              goalMl: AppConstants.defaultHydrationGoalMl,
-              onTap: () => context.push(AppRoutes.hydration),
-            ),
-          ],
-        ),
+      child: ListView(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+        children: [
+          _HomeHeader(streak: state.currentStreak),
+          const SizedBox(height: 20),
+          _StatsRow(
+            todaySessionCount: state.todaySessionCount,
+            weeklyMinutes: state.weeklyMinutes,
+            todayWaterMl: state.todayWaterMl,
+          ),
+          const SizedBox(height: 28),
+          Text(
+            'Quick Start',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                ),
+          ),
+          const SizedBox(height: 12),
+          const _QuickStartGrid(),
+          const SizedBox(height: 24),
+          HydrationMiniBar(
+            waterMl: state.todayWaterMl,
+            goalMl: AppConstants.defaultHydrationGoalMl,
+            onTap: () => context.push(AppRoutes.hydration),
+          ),
+        ],
       ),
     );
   }
@@ -275,7 +280,7 @@ class _QuickStartGrid extends StatelessWidget {
                   durationLabel: '5 min',
                   accentColor: AppColors.primary,
                   onTap: () => context.push(
-                    AppRoutes.routinesWithCategory('stretch'),
+                    AppRoutes.routinesExploreWithCategory('stretch'),
                   ),
                 ),
               ),
@@ -288,7 +293,7 @@ class _QuickStartGrid extends StatelessWidget {
                   durationLabel: '3 min',
                   accentColor: AppColors.hydrationAccent,
                   onTap: () => context.push(
-                    AppRoutes.routinesWithCategory('eyes'),
+                    AppRoutes.routinesExploreWithCategory('eyes'),
                   ),
                 ),
               ),
@@ -308,7 +313,7 @@ class _QuickStartGrid extends StatelessWidget {
                   durationLabel: '7 min',
                   accentColor: AppColors.premiumAccent,
                   onTap: () => context.push(
-                    AppRoutes.routinesWithCategory('mobility'),
+                    AppRoutes.routinesExploreWithCategory('mobility'),
                   ),
                 ),
               ),
@@ -321,7 +326,7 @@ class _QuickStartGrid extends StatelessWidget {
                   durationLabel: '4 min',
                   accentColor: _posturePurple,
                   onTap: () => context.push(
-                    AppRoutes.routinesWithCategory('posture'),
+                    AppRoutes.routinesExploreWithCategory('posture'),
                   ),
                 ),
               ),

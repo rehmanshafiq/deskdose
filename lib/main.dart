@@ -9,7 +9,7 @@ import 'package:deskdose/features/home/bloc/home_bloc.dart';
 import 'package:deskdose/features/hydration/presentation/bloc/hydration_bloc.dart';
 import 'package:deskdose/features/posture/presentation/bloc/posture_bloc.dart';
 import 'package:deskdose/features/reminders/presentation/bloc/reminder_bloc.dart';
-import 'package:deskdose/features/routines/presentation/bloc/routine_bloc.dart';
+import 'package:deskdose/features/routines/bloc/routines_bloc.dart';
 import 'package:deskdose/features/subscription/presentation/bloc/subscription_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -62,11 +62,16 @@ class DeskDoseApp extends StatelessWidget {
         BlocProvider(
           create: (_) => sl<HomeBloc>()..add(const HomeLoadRequested()),
         ),
-        BlocProvider(create: (_) => sl<RoutineBloc>()),
+        BlocProvider(
+          create: (_) => sl<RoutinesBloc>()..add(const RoutinesLoadRequested()),
+        ),
+        BlocProvider(
+          create: (_) => sl<SubscriptionBloc>()
+            ..add(const LoadSubscriptionEvent()),
+        ),
         BlocProvider(create: (_) => sl<ReminderBloc>()),
         BlocProvider(create: (_) => sl<HydrationBloc>()),
         BlocProvider(create: (_) => sl<PostureBloc>()),
-        BlocProvider(create: (_) => sl<SubscriptionBloc>()),
       ],
       child: MaterialApp.router(
         title: AppConstants.appName,

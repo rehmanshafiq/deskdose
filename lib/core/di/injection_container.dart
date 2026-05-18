@@ -6,6 +6,7 @@ import 'package:deskdose/core/di/modules/home_module.dart';
 import 'package:deskdose/core/di/modules/hydration_module.dart';
 import 'package:deskdose/core/di/modules/posture_module.dart';
 import 'package:deskdose/core/di/modules/reminders_module.dart';
+import 'package:deskdose/core/di/modules/routines_feature_module.dart';
 import 'package:deskdose/core/di/modules/routines_module.dart';
 import 'package:deskdose/core/di/modules/subscription_module.dart';
 import 'package:deskdose/core/identity/anonymous_user_id_provider.dart';
@@ -34,6 +35,7 @@ Future<void> initDependencies() async {
   DataModule.register(sl);
   await sl<AnonymousUserIdProvider>().getOrCreate();
   RoutinesModule.register(sl);
+  RoutinesFeatureModule.register(sl);
   HomeModule.register(sl);
   RemindersModule.register(sl);
   HydrationModule.register(sl);
