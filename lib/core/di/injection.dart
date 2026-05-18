@@ -1,4 +1,5 @@
 import 'package:deskdose/core/config/env_config.dart';
+import 'package:deskdose/core/di/modules/subscription_module.dart';
 import 'package:deskdose/core/identity/anonymous_user_id_provider.dart';
 import 'package:deskdose/core/utils/anonymous_user_helper.dart';
 import 'package:deskdose/data/datasources/supabase_datasource.dart';
@@ -58,6 +59,8 @@ Future<void> setupLocator() async {
   sl.registerLazySingleton<ReminderNotificationService>(
     () => ReminderNotificationService.instance,
   );
+
+  SubscriptionModule.register(sl);
 
   sl.registerFactory(
     () => HomeBloc(
