@@ -1,6 +1,7 @@
 import 'package:deskdose/core/presentation/widgets/screen_safe_area.dart';
 import 'package:deskdose/features/hydration/bloc/hydration_bloc.dart';
 import 'package:deskdose/features/hydration/view/widgets/hydration_circle.dart';
+import 'package:deskdose/features/hydration/view/widgets/hydration_loading_shimmer.dart';
 import 'package:deskdose/features/hydration/view/widgets/hydration_log_item.dart';
 import 'package:deskdose/features/hydration/view/widgets/quick_add_chip.dart';
 import 'package:flutter/material.dart';
@@ -58,9 +59,8 @@ class _HydrationBody extends StatelessWidget {
       },
       builder: (context, state) {
         return switch (state) {
-          HydrationInitial() || HydrationLoading() => const Center(
-              child: CircularProgressIndicator(color: Color(0xFF378ADD)),
-            ),
+          HydrationInitial() || HydrationLoading() =>
+            const HydrationLoadingShimmer(),
           HydrationError(:final message) => _HydrationErrorView(message: message),
           HydrationLoaded() => _HydrationLoadedView(state: state),
         };

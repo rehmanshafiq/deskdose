@@ -8,6 +8,7 @@ import 'package:deskdose/features/paywall/view/paywall_bottom_sheet.dart';
 import 'package:deskdose/features/reminders/bloc/reminders_bloc.dart';
 import 'package:deskdose/features/reminders/view/widgets/hydration_goal_picker_sheet.dart';
 import 'package:deskdose/features/reminders/view/widgets/interval_picker_sheet.dart';
+import 'package:deskdose/features/reminders/view/widgets/settings_loading_shimmer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -45,14 +46,8 @@ class _SettingsBody extends StatelessWidget {
             ),
             SliverToBoxAdapter(
               child: switch (state) {
-                RemindersInitial() || RemindersLoading() => const Padding(
-                    padding: EdgeInsets.all(48),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ),
+                RemindersInitial() || RemindersLoading() =>
+                  const SettingsLoadingShimmer(),
                 RemindersError(:final message) => Padding(
                     padding: const EdgeInsets.all(24),
                     child: Column(

@@ -6,11 +6,11 @@ import 'package:deskdose/features/paywall/view/paywall_bottom_sheet.dart';
 import 'package:deskdose/features/routines/bloc/routines_bloc.dart';
 import 'package:deskdose/features/routines/view/widgets/routine_card.dart';
 import 'package:deskdose/features/routines/view/widgets/routines_header.dart';
+import 'package:deskdose/features/routines/view/widgets/routines_loading_shimmer.dart';
 import 'package:deskdose/features/subscription/presentation/bloc/subscription_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shimmer/shimmer.dart';
 
 class RoutinesScreen extends StatelessWidget {
   const RoutinesScreen({
@@ -57,7 +57,7 @@ class _RoutinesBody extends StatelessWidget {
         final hasProAccess = _hasProAccess(context);
 
         return switch (state) {
-          RoutinesInitial() || RoutinesLoading() => _RoutinesLoadingView(
+          RoutinesInitial() || RoutinesLoading() => RoutinesLoadingShimmer(
               showBackButton: showBackButton,
             ),
           RoutinesError(:final message) => _RoutinesErrorView(message: message),
@@ -77,29 +77,6 @@ class _RoutinesBody extends StatelessWidget {
       SubscriptionLoaded(:final subscription) => subscription.isPremium,
       _ => false,
     };
-  }
-}
-
-class _RoutinesLoadingView extends StatelessWidget {
-  const _RoutinesLoadingView({required this.showBackButton});
-
-  final bool showBackButton;
-
-  @override
-  Widget build(BuildContext context) {
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
-      children: [
-        RoutinesHeader(showBackButton: showBackButton),
-        const SizedBox(height: 16),
-        const _FilterChipsShimmer(),
-        const SizedBox(height: 16),
-        ...List.generate(5, (_) => const Padding(
-              padding: EdgeInsets.only(bottom: 12),
-              child: _CardShimmer(),
-            )),
-      ],
-    );
   }
 }
 
@@ -244,53 +221,6 @@ class _RoutinesLoadedView extends StatelessWidget {
     context.push(
       AppRoutes.routineDetailPath(routine.id),
       extra: routine,
-    );
-  }
-}
-
-class _FilterChipsShimmer extends StatelessWidget {
-  const _FilterChipsShimmer();
-
-  @override
-  Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: AppColors.surfaceContainerHigh,
-      highlightColor: AppColors.surfaceContainer,
-      child: SizedBox(
-        height: 36,
-        child: Row(
-          children: List.generate(
-            4,
-            (_) => Container(
-              width: 72,
-              margin: const EdgeInsets.only(right: 8),
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(20),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _CardShimmer extends StatelessWidget {
-  const _CardShimmer();
-
-  @override
-  Widget build(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: AppColors.surfaceContainerHigh,
-      highlightColor: AppColors.surfaceContainer,
-      child: Container(
-        height: 80,
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(16),
-        ),
-      ),
     );
   }
 }
